@@ -1,0 +1,6 @@
+@ConcurrencyPOC_HostAddress = http://localhost:5197
+
+GET {{ConcurrencyPOC_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
