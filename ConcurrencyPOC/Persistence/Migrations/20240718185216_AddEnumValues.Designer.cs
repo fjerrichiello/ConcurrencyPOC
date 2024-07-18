@@ -3,6 +3,7 @@ using System;
 using ConcurrencyPOC.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ConcurrencyPOC.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240718185216_AddEnumValues")]
+    partial class AddEnumValues
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,43 +40,6 @@ namespace ConcurrencyPOC.Persistence.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Authors");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            AuthorId = "Dr.Seuss"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            AuthorId = "Roald Dahl"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            AuthorId = "Beatrix Potter"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            AuthorId = "Maurice Sendak"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            AuthorId = "Eric Carle"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            AuthorId = "Shel Silverstein"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            AuthorId = "Judy Blume"
-                        });
                 });
 
             modelBuilder.Entity("ConcurrencyPOC.Persistence.Models.Book", b =>

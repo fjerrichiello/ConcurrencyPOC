@@ -6,4 +6,7 @@ public interface IBookCountRepository
 {
     Task<BookCount?> GetBookCountForAuthor(string authorId);
 
+    Task AddAsync(string authorId);
+
+    Task IncrementCountAsync(int id);
 }

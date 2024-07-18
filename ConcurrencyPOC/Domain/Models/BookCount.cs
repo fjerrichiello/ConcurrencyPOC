@@ -1,3 +1,5 @@
 ﻿namespace ConcurrencyPOC.Domain.Models;
 
-public record BookCount(string AuthorId, int Count);
+public record BookCount(int Id, string AuthorId, int Count)
+{
+};

@@ -9,6 +9,24 @@ public class BookCountRepository(ApplicationDbContext _context) : IBookCountRepo
     {
         var bookCount =
             await _context.BookCounts.FirstOrDefaultAsync(bc => bc.AuthorId.ToLower().Equals(authorId.ToLower()));
-        return bookCount is null ? null : new BookCount(bookCount.AuthorId, bookCount.Count);
+        return bookCount is null
+            ? null
+            : new BookCount(bookCount.Id, bookCount.AuthorId, bookCount.Count);
+    }
+
+    public async Task AddAsync(string authorId)
+        => await _context.BookCounts.AddAsync(new Models.BookCount
+        {
+            AuthorId = authorId,
+            Count = 1,
+        });
+
+    public async Task IncrementCountAsync(int id)
+    {
+        var bookCount = await _context.BookCounts.FindAsync(id);
+        if (bookCount is null)
+            throw new InvalidOperationException("Entity doesn't exist");
+
+        bookCount.Count += 1;
     }
 }
