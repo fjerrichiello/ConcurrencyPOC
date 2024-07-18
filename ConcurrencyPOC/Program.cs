@@ -17,9 +17,9 @@ services.AddKeyedScoped<IAddBookHandler, AddBookHandlerTwo>("Two");
 
 services.AddScoped<IBookRepository, BookRepository>();
 
-services.AddScoped<IBookRequestRepository, BookRequestRepository>();
+services.AddKeyedScoped<IBookRequestRepository, BookRequestRepository>("One");
 
-services.AddScoped<IBookRequestTwoRepository, BookRequestTwoRepository>();
+services.AddKeyedScoped<IBookRequestRepository, BookRequestTwoRepository>("Two");
 
 services.AddScoped<IUnitOfWork, UnitOfWork<ApplicationDbContext>>();
 

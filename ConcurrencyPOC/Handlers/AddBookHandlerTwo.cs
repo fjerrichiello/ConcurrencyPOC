@@ -9,7 +9,8 @@ namespace ConcurrencyPOC.Handlers;
 
 public class AddBookHandlerTwo(
     IBookRepository _bookRepository,
-    IBookRequestTwoRepository _bookRequestTwoRepository,
+    [FromKeyedServices("Two")]
+    IBookRequestRepository _bookRequestTwoRepository,
     IBookCountRepository _bookCountRepository,
     IUnitOfWork _unitOfWork) : IAddBookHandler
 {
@@ -34,6 +35,8 @@ public class AddBookHandlerTwo(
     {
         try
         {
+            if (await DoesExist(addBookRequestDto.AuthorId, addBookRequestDto.Title)) return null;
+
             await _bookRequestTwoRepository.AddAsync(new BookRequest(addBookRequestDto.AuthorId,
                 addBookRequestDto.Title,
                 RequestType.Add));

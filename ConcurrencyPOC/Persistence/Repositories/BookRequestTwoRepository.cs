@@ -4,10 +4,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ConcurrencyPOC.Persistence.Repositories;
 
-public class BookRequestTwoRepository(ApplicationDbContext _context) : IBookRequestTwoRepository
+public class BookRequestTwoRepository(ApplicationDbContext _context) : IBookRequestRepository
 {
     public async Task<int> GetPendingAddRequestCountAsync(string authorId)
-        => await _context.BookRequests.CountAsync(x =>
+        => await _context.BookRequestTwos.CountAsync(x =>
             x.AuthorId.ToLower().Equals(authorId.ToLower())
             && x.ApprovalStatus == ApprovalStatus.Pending);
 
@@ -27,7 +27,7 @@ public class BookRequestTwoRepository(ApplicationDbContext _context) : IBookRequ
     }
 
     public async Task<bool> PendingExistsAsync(string authorId, string title)
-        => await _context.BookRequests.AnyAsync(x =>
+        => await _context.BookRequestTwos.AnyAsync(x =>
             x.AuthorId.ToLower().Equals(authorId.ToLower())
             && x.Title.ToLower().Equals(title.ToLower())
             && x.ApprovalStatus == ApprovalStatus.Pending);

@@ -9,6 +9,7 @@ namespace ConcurrencyPOC.Handlers;
 
 public class AddBookHandler(
     IBookRepository _bookRepository,
+    [FromKeyedServices("Two")]
     IBookRequestRepository _bookRequestRepository,
     IBookCountRepository _bookCountRepository,
     IUnitOfWork _unitOfWork) : IAddBookHandler
