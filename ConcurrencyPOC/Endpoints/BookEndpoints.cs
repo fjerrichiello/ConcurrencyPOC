@@ -11,9 +11,8 @@ public static class BookEndpoints
         app.MapPost("/add-book-request", AddBookRequest);
     }
 
-    private static Task AddBookRequest(HttpContext context, IAddBookHandler _addBookHandler,
-        [FromBody] AddBookRequestDto addBookRequestDto)
-    {
-        throw new NotImplementedException();
-    }
+    private static async Task AddBookRequest(HttpContext context, IAddBookHandler _addBookHandler,
+        [FromBody]
+        AddBookRequestDto addBookRequestDto)
+        => await _addBookHandler.HandleRequestAsync(addBookRequestDto);
 }
