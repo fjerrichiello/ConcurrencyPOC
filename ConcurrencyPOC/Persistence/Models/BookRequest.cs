@@ -4,7 +4,6 @@ namespace ConcurrencyPOC.Persistence.Models;
 
 public class BookRequest
 {
-    
     [Key]
     public int Id { get; set; }
 
