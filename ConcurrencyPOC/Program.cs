@@ -11,12 +11,15 @@ var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 
 // Add Services
-services.AddScoped<IAddBookHandler, AddBookHandler>();
+services.AddKeyedScoped<IAddBookHandler, AddBookHandler>("One");
 
+services.AddKeyedScoped<IAddBookHandler, AddBookHandlerTwo>("Two");
 
 services.AddScoped<IBookRepository, BookRepository>();
 
 services.AddScoped<IBookRequestRepository, BookRequestRepository>();
+
+services.AddScoped<IBookRequestTwoRepository, BookRequestTwoRepository>();
 
 services.AddScoped<IUnitOfWork, UnitOfWork<ApplicationDbContext>>();
 

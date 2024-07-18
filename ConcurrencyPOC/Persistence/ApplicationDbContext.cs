@@ -11,6 +11,8 @@ public class ApplicationDbContext : DbContext
 
     public virtual DbSet<BookRequest> BookRequests { get; set; } = null!;
 
+    public virtual DbSet<BookRequestTwo> BookRequestTwos { get; set; } = null!;
+
     public virtual DbSet<BookCount> BookCounts { get; set; } = null!;
 
     public ApplicationDbContext(
@@ -29,6 +31,21 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<BookRequest>()
             .Property(x => x.ApprovalStatus)
             .HasConversion<string>();
+
+        modelBuilder.Entity<BookRequestTwo>()
+            .Property(x => x.RequestType)
+            .HasConversion<string>();
+
+        modelBuilder.Entity<BookRequestTwo>()
+            .Property(x => x.ApprovalStatus)
+            .HasConversion<string>();
+
+        modelBuilder.Entity<BookRequestTwo>()
+            .HasIndex(b => new { b.AuthorId, b.Title, b.ApprovalStatus, b.RequestType, b.Count })
+            .IsUnique()
+            .HasFilter("""
+                       "ApprovalStatus" = 'Pending' and "RequestType" = 'Add'
+                       """);
 
         List<Author> authors =
         [
