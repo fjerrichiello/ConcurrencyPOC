@@ -24,6 +24,7 @@ public class AddBookHandler(
         }
         catch (Exception e)
         {
+            await Task.Delay(5000);
             var successError = await SubmitRequest(addBookRequestDto);
             successError.Dump();
             throw;

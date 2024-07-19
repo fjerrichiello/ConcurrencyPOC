@@ -8,7 +8,7 @@ public class BookRequest
 {
     [Key]
     [DatabaseGenerated(DatabaseGeneratedOption.None)]
-    public Guid Id { get; init; }
+    public Guid MainId { get; init; }
 
     public required string AuthorId { get; set; }
 

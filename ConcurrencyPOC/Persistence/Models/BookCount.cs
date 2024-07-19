@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
 
 namespace ConcurrencyPOC.Persistence.Models;
@@ -7,7 +8,8 @@ namespace ConcurrencyPOC.Persistence.Models;
 public class BookCount
 {
     [Key]
-    public int Id { get; set; }
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
+    public Guid MainId { get; init; }
 
     public required string AuthorId { get; set; }
 

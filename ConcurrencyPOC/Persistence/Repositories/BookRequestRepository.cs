@@ -14,7 +14,7 @@ public class BookRequestRepository(ApplicationDbContext _context) : IBookRequest
     public async Task AddAsync(BookRequest bookRequest)
         => await _context.BookRequests.AddAsync(new Models.BookRequest()
         {
-            Id = Guid.NewGuid(),
+            MainId = Guid.NewGuid(),
             AuthorId = bookRequest.AuthorId,
             Title = bookRequest.Title,
             RequestType = bookRequest.RequestType,

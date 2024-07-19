@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ConcurrencyPOC.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240719191610_UpdateIdToGuid")]
+    [Migration("20240719192128_UpdateIdToGuid")]
     partial class UpdateIdToGuid
     {
         /// <inheritdoc />
@@ -134,7 +134,7 @@ namespace ConcurrencyPOC.Persistence.Migrations
 
             modelBuilder.Entity("ConcurrencyPOC.Persistence.Models.BookRequest", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("MainId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("ApprovalStatus")
@@ -153,7 +153,7 @@ namespace ConcurrencyPOC.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("Id");
+                    b.HasKey("MainId");
 
                     b.HasIndex("AuthorId", "Title", "ApprovalStatus", "RequestType")
                         .IsUnique()

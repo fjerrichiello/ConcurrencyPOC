@@ -131,7 +131,7 @@ namespace ConcurrencyPOC.Persistence.Migrations
 
             modelBuilder.Entity("ConcurrencyPOC.Persistence.Models.BookRequest", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<Guid>("MainId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("ApprovalStatus")
@@ -150,7 +150,7 @@ namespace ConcurrencyPOC.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.HasKey("Id");
+                    b.HasKey("MainId");
 
                     b.HasIndex("AuthorId", "Title", "ApprovalStatus", "RequestType")
                         .IsUnique()

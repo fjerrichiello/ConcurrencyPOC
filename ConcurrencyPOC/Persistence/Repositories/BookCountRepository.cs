@@ -11,12 +11,13 @@ public class BookCountRepository(ApplicationDbContext _context) : IBookCountRepo
             await _context.BookCounts.FirstOrDefaultAsync(bc => bc.AuthorId.ToLower().Equals(authorId.ToLower()));
         return bookCount is null
             ? null
-            : new BookCount(bookCount.Id, bookCount.AuthorId, bookCount.Count);
+            : new BookCount(bookCount.MainId, bookCount.AuthorId, bookCount.Count);
     }
 
     public async Task AddAsync(string authorId)
         => await _context.BookCounts.AddAsync(new Models.BookCount
         {
+            MainId = Guid.NewGuid(),
             AuthorId = authorId,
             Count = 1,
         });
