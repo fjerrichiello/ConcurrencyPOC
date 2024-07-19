@@ -32,6 +32,17 @@ public class ApplicationDbContext : DbContext
             .Property(x => x.ApprovalStatus)
             .HasConversion<string>();
 
+        modelBuilder.Entity<BookRequest>()
+            .HasIndex(b => new { b.AuthorId, b.Title, b.ApprovalStatus, b.RequestType })
+            .IsUnique()
+            .HasFilter("""
+                       "ApprovalStatus" = 'Pending' and "RequestType" = 'Add'
+                       """);
+
+        modelBuilder.Entity<Book>()
+            .HasIndex(b => new { b.AuthorId, b.Title })
+            .IsUnique();
+
         modelBuilder.Entity<BookRequestTwo>()
             .Property(x => x.RequestType)
             .HasConversion<string>();
