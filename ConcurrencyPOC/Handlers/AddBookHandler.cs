@@ -17,28 +17,12 @@ public class AddBookHandler(
 {
     public async Task HandleRequestAsync(AddBookRequestDto addBookRequestDto)
     {
-        try
-        {
-            var success = await SubmitRequest(addBookRequestDto);
-            success.Dump();
-        }
-        catch (Exception e)
-        {
-            await Task.Delay(5000);
-            var successError = await SubmitRequest(addBookRequestDto);
-            successError.Dump();
-            throw;
-        }
-    }
-
-    private async Task<bool?> SubmitRequest(AddBookRequestDto addBookRequestDto)
-    {
         var bookCount = await _bookCountRepository.GetBookCountForAuthor(addBookRequestDto.AuthorId);
         Console.WriteLine(bookCount);
         var count = bookCount?.Count ?? 0;
 
         if (count == 3)
-            return null;
+            return;
 
         if (count == 0)
         {
@@ -49,19 +33,18 @@ public class AddBookHandler(
                 RequestType.Add));
 
             await _unitOfWork.CompleteAsync();
-            return true;
+            return;
         }
 
-        if (await DoesExist(addBookRequestDto.AuthorId, addBookRequestDto.Title)) return null;
-
-        await _bookCountRepository.IncrementCountAsync(bookCount!.Id);
+        if (await DoesExist(addBookRequestDto.AuthorId, addBookRequestDto.Title)) return;
 
         await _bookRequestRepository.AddAsync(new BookRequest(addBookRequestDto.AuthorId,
             addBookRequestDto.Title,
             RequestType.Add));
 
+        await _bookCountRepository.IncrementCountAsync(bookCount!.Id);
+
         await _unitOfWork.CompleteAsync();
-        return true;
     }
 
 
