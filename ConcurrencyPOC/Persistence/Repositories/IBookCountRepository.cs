@@ -8,5 +8,5 @@ public interface IBookCountRepository
 
     Task AddAsync(string authorId);
 
-    Task IncrementCountAsync(int id);
+    Task IncrementCountAsync(Guid id);
 }

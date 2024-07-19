@@ -22,7 +22,7 @@ public class BookCountRepository(ApplicationDbContext _context) : IBookCountRepo
             Count = 1,
         });
 
-    public async Task IncrementCountAsync(int id)
+    public async Task IncrementCountAsync(Guid id)
     {
         var bookCount = await _context.BookCounts.FindAsync(id);
         if (bookCount is null)
