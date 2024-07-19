@@ -4,71 +4,63 @@ using ConcurrencyPOC.Enums;
 using ConcurrencyPOC.Exceptions;
 using ConcurrencyPOC.Persistence.Repositories;
 using ConcurrencyPOC.Persistence.UnitOfWork;
+using Dumpify;
 
 namespace ConcurrencyPOC.Handlers;
 
 public class AddBookHandler(
     IBookRepository _bookRepository,
-    [FromKeyedServices("Two")]
+    [FromKeyedServices("One")]
     IBookRequestRepository _bookRequestRepository,
     IBookCountRepository _bookCountRepository,
     IUnitOfWork _unitOfWork) : IAddBookHandler
 {
     public async Task HandleRequestAsync(AddBookRequestDto addBookRequestDto)
     {
-        var success = await SubmitRequest(addBookRequestDto);
-        var count = 0;
-
-        while ((success is not null && success != true) || count <= 2)
+        try
         {
-            success = await SubmitRequest(addBookRequestDto);
-            count++;
+            var success = await SubmitRequest(addBookRequestDto);
+            success.Dump();
         }
-
-        if (success == null)
+        catch (Exception e)
         {
-            Console.WriteLine("MAXED OUT");
+            var successError = await SubmitRequest(addBookRequestDto);
+            successError.Dump();
+            throw;
         }
     }
 
     private async Task<bool?> SubmitRequest(AddBookRequestDto addBookRequestDto)
     {
-        try
+        var bookCount = await _bookCountRepository.GetBookCountForAuthor(addBookRequestDto.AuthorId);
+        Console.WriteLine(bookCount);
+        var count = bookCount?.Count ?? 0;
+
+        if (count == 3)
+            return null;
+
+        if (count == 0)
         {
-            var bookCount = await _bookCountRepository.GetBookCountForAuthor(addBookRequestDto.AuthorId);
-            var count = bookCount?.Count ?? await GetTotalRequestsAndBooks(addBookRequestDto.AuthorId);
-
-            if (count == 3)
-                return null;
-
-            if (bookCount is null)
-            {
-                await _bookCountRepository.AddAsync(addBookRequestDto.AuthorId);
-                //Add request we know none exist
-                await _bookRequestRepository.AddAsync(new BookRequest(addBookRequestDto.AuthorId,
-                    addBookRequestDto.Title,
-                    RequestType.Add));
-            }
-            else
-            {
-                if (!await DoesExist(addBookRequestDto.AuthorId, addBookRequestDto.Title))
-                {
-                    await _bookCountRepository.IncrementCountAsync(bookCount.Id);
-
-                    await _bookRequestRepository.AddAsync(new BookRequest(addBookRequestDto.AuthorId,
-                        addBookRequestDto.Title,
-                        RequestType.Add));
-                }
-            }
+            await _bookCountRepository.AddAsync(addBookRequestDto.AuthorId);
+            //Add request we know none exist
+            await _bookRequestRepository.AddAsync(new BookRequest(addBookRequestDto.AuthorId,
+                addBookRequestDto.Title,
+                RequestType.Add));
 
             await _unitOfWork.CompleteAsync();
             return true;
         }
-        catch (ConcurrentUpdateException e)
-        {
-            Console.WriteLine(e);
-            return false;
-        }
+
+        if (await DoesExist(addBookRequestDto.AuthorId, addBookRequestDto.Title)) return null;
+
+        await _bookCountRepository.IncrementCountAsync(bookCount!.Id);
+
+        await _bookRequestRepository.AddAsync(new BookRequest(addBookRequestDto.AuthorId,
+            addBookRequestDto.Title,
+            RequestType.Add));
+
+        await _unitOfWork.CompleteAsync();
+        return true;
     }
 
 

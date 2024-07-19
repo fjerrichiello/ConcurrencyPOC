@@ -1,6 +1,4 @@
-﻿using ConcurrencyPOC.Domain.Models;
-
-namespace ConcurrencyPOC.Persistence.Repositories;
+﻿namespace ConcurrencyPOC.Persistence.Repositories;
 
 public interface IBookRepository
 {
