@@ -18,5 +18,5 @@ public class BookRequest
 
     public ApprovalStatus ApprovalStatus { get; set; }
 
-    public List<DeclineReason> DeclineReasons { get; set; } = [];
+    public IEnumerable<DeclineReason>? DeclineReasons { get; set; }
 }
