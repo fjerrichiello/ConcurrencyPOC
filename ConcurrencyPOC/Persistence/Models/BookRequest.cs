@@ -17,4 +17,6 @@ public class BookRequest
     public RequestType RequestType { get; set; }
 
     public ApprovalStatus ApprovalStatus { get; set; }
+
+    public List<DeclineReason> DeclineReasons { get; set; } = [];
 }

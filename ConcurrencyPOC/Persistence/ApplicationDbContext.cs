@@ -1,5 +1,8 @@
-﻿using ConcurrencyPOC.Persistence.Models;
+﻿using ConcurrencyPOC.Enums;
+using ConcurrencyPOC.Persistence.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql;
 
 namespace ConcurrencyPOC.Persistence;
 
@@ -31,6 +34,7 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<BookRequest>()
             .Property(x => x.ApprovalStatus)
             .HasConversion<string>();
+
 
         modelBuilder.Entity<BookRequest>()
             .HasIndex(b => new { b.AuthorId, b.Title, b.ApprovalStatus, b.RequestType })
@@ -69,6 +73,11 @@ public class ApplicationDbContext : DbContext
             new Author() { Id = 7, AuthorId = "Judy Blume" }
         ];
 
+        modelBuilder.Entity<BookRequest>()
+            .PrimitiveCollection(c => c.DeclineReasons)
+            .ElementType()
+            .HasConversion<string>();
+        
         modelBuilder.Entity<Author>()
             .HasData(authors);
     }
