@@ -77,7 +77,11 @@ public class ApplicationDbContext : DbContext
             .PrimitiveCollection(c => c.DeclineReasons)
             .ElementType()
             .HasConversion<string>();
-        
+
+        modelBuilder.Entity<BookRequestDeclineReason>()
+            .Property(c => c.Reason)
+            .HasConversion<string>();
+
         modelBuilder.Entity<Author>()
             .HasData(authors);
     }

@@ -19,4 +19,7 @@ public class BookRequest
     public ApprovalStatus ApprovalStatus { get; set; }
 
     public IEnumerable<DeclineReason>? DeclineReasons { get; set; }
+
+
+    public IEnumerable<BookRequestDeclineReason>? DeclineReasons2 { get; set; }
 }
