@@ -22,4 +22,6 @@ public class BookRequest
 
 
     public IEnumerable<BookRequestDeclineReason>? DeclineReasons2 { get; set; }
+
+    public IEnumerable<BookRequestDeclineReasonTwo>? DeclineReasonsTwo { get; set; }
 }

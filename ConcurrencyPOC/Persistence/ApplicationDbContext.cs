@@ -82,6 +82,10 @@ public class ApplicationDbContext : DbContext
             .Property(c => c.Reason)
             .HasConversion<string>();
 
+        modelBuilder.Entity<BookRequestDeclineReasonTwo>()
+            .Property(c => c.Reason)
+            .HasConversion<string>();
+
         modelBuilder.Entity<Author>()
             .HasData(authors);
     }
