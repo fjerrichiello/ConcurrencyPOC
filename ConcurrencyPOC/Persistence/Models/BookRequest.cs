@@ -20,8 +20,9 @@ public class BookRequest
 
     public IEnumerable<DeclineReason>? DeclineReasons { get; set; }
 
-
     public IEnumerable<BookRequestDeclineReason>? DeclineReasons2 { get; set; }
 
     public IEnumerable<BookRequestDeclineReasonTwo>? DeclineReasonsTwo { get; set; }
+
+    public IEnumerable<BookRequestDeclineReasonThree>? DeclineReasonsThree { get; set; }
 }
