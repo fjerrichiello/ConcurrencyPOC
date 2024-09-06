@@ -19,10 +19,6 @@ public static class BookEndpoints
         app.MapPost("/add-book-decline-reason-test", AddBookDeclineReason);
     }
 
-    private static Task EditBookRequest(HttpContext context)
-    {
-        throw new NotImplementedException();
-    }
 
     private static async Task AddBookDeclineReason([FromServices] ApplicationDbContext dbContext)
     {
@@ -44,7 +40,6 @@ public static class BookEndpoints
 
 
     private static async Task AddBookRequest(HttpContext context,
-        [FromKeyedServices("One")]
         IAddBookHandler _addBookHandler,
         [FromBody]
         AddBookRequestDto addBookRequestDto)
@@ -61,7 +56,6 @@ public static class BookEndpoints
     }
 
     private static async Task EditBookRequest(HttpContext context,
-        [FromKeyedServices("One")]
         IEditBookHandler _editBookHandler,
         [FromBody]
         EditBookRequestDto editBookRequestDto)
