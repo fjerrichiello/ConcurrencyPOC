@@ -38,12 +38,19 @@ public class ApplicationDbContext : DbContext
 
 
         modelBuilder.Entity<BookRequest>()
-            .HasIndex(b => new { b.AuthorId, b.Title, b.NewTitle, b.ApprovalStatus, b.RequestType })
+            .HasIndex(b => new { b.AuthorId, b.Title, b.ApprovalStatus })
             .IsUnique()
             .HasFilter("""
-                       "ApprovalStatus" = 'Pending' and "RequestType" = 'Add'
+                       "ApprovalStatus" = 'Pending'
                        """);
 
+        modelBuilder.Entity<BookRequest>()
+            .HasIndex(b => new { b.AuthorId, b.NewTitle, b.ApprovalStatus })
+            .IsUnique()
+            .HasFilter("""
+                       "ApprovalStatus" = 'Pending'
+                       """);
+        
         modelBuilder.Entity<Book>()
             .HasIndex(b => new { b.AuthorId, b.Title })
             .IsUnique();

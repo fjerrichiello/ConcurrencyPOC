@@ -15,8 +15,13 @@ public static class BookEndpoints
     public static void MapBookEndpoints(this WebApplication app)
     {
         app.MapPost("/add-book-request", AddBookRequest);
+        app.MapPost("/edit-book-request", EditBookRequest);
         app.MapPost("/add-book-decline-reason-test", AddBookDeclineReason);
-        app.MapPost("/add-book-request-two", AddBookRequestTwo);
+    }
+
+    private static Task EditBookRequest(HttpContext context)
+    {
+        throw new NotImplementedException();
     }
 
     private static async Task AddBookDeclineReason([FromServices] ApplicationDbContext dbContext)
@@ -38,45 +43,37 @@ public static class BookEndpoints
     }
 
 
-    // private static async Task AddBookRequest(HttpContext context,
-    //     [FromKeyedServices("One")]
-    //     IAddBookHandler _addBookHandler,
-    //     [FromBody]
-    //     AddBookRequestDto addBookRequestDto)
-    // {
-    //     try
-    //     {
-    //         await _addBookHandler.HandleRequestAsync(addBookRequestDto);
-    //     }
-    //     catch (Exception e)
-    //     {
-    //         await Task.Delay(5000);
-    //         await _addBookHandler.HandleRequestAsync(addBookRequestDto);
-    //     }
-    // }
-
     private static async Task AddBookRequest(HttpContext context,
-        IServiceScopeFactory _factory,
+        [FromKeyedServices("One")]
+        IAddBookHandler _addBookHandler,
         [FromBody]
         AddBookRequestDto addBookRequestDto)
     {
         try
         {
-            var addBookHandler = _factory.CreateAsyncScope().ServiceProvider.GetKeyedService<IAddBookHandler>("One");
-            await addBookHandler!.HandleRequestAsync(addBookRequestDto);
+            await _addBookHandler.HandleRequestAsync(addBookRequestDto);
         }
         catch (Exception e)
         {
-            e.Dump();
-            var addBookHandler = _factory.CreateAsyncScope().ServiceProvider.GetKeyedService<IAddBookHandler>("One");
-            await addBookHandler!.HandleRequestAsync(addBookRequestDto);
+            await Task.Delay(5000);
+            await _addBookHandler.HandleRequestAsync(addBookRequestDto);
         }
     }
 
-    private static async Task AddBookRequestTwo(HttpContext context,
-        [FromKeyedServices("Two")]
-        IAddBookHandler _addBookHandler,
+    private static async Task EditBookRequest(HttpContext context,
+        [FromKeyedServices("One")]
+        IEditBookHandler _editBookHandler,
         [FromBody]
-        AddBookRequestDto addBookRequestDto)
-        => await _addBookHandler.HandleRequestAsync(addBookRequestDto);
+        EditBookRequestDto editBookRequestDto)
+    {
+        try
+        {
+            await _editBookHandler.HandleRequestAsync(editBookRequestDto);
+        }
+        catch (Exception e)
+        {
+            await Task.Delay(5000);
+            await _editBookHandler.HandleRequestAsync(editBookRequestDto);
+        }
+    }
 }
