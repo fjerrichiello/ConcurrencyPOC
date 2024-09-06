@@ -5,8 +5,8 @@ namespace ConcurrencyPOC.Persistence.Repositories;
 public interface IBookRequestRepository
 {
     Task<int> GetPendingAddRequestCountAsync(string authorId);
-
-    Task AddAsync(BookRequest bookRequest);
+    Task AddAddBookRequestAsync(AddBookRequest addBookRequest);
+    Task AddEditBookRequestAsync(EditBookRequest editBookRequest);
 
     Task<bool> PendingExistsAsync(string authorId, string title);
 }

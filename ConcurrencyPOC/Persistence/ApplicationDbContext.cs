@@ -14,7 +14,8 @@ public class ApplicationDbContext : DbContext
 
     public virtual DbSet<BookRequest> BookRequests { get; set; } = null!;
 
-    public virtual DbSet<BookRequestTwo> BookRequestTwos { get; set; } = null!;
+    public virtual DbSet<BookRequestDeclineReason> BookRequestDeclineReasons { get; set; } = null!;
+
 
     public virtual DbSet<BookCount> BookCounts { get; set; } = null!;
 
@@ -37,7 +38,7 @@ public class ApplicationDbContext : DbContext
 
 
         modelBuilder.Entity<BookRequest>()
-            .HasIndex(b => new { b.AuthorId, b.Title, b.ApprovalStatus, b.RequestType })
+            .HasIndex(b => new { b.AuthorId, b.Title, b.NewTitle, b.ApprovalStatus, b.RequestType })
             .IsUnique()
             .HasFilter("""
                        "ApprovalStatus" = 'Pending' and "RequestType" = 'Add'
@@ -46,21 +47,6 @@ public class ApplicationDbContext : DbContext
         modelBuilder.Entity<Book>()
             .HasIndex(b => new { b.AuthorId, b.Title })
             .IsUnique();
-
-        modelBuilder.Entity<BookRequestTwo>()
-            .Property(x => x.RequestType)
-            .HasConversion<string>();
-
-        modelBuilder.Entity<BookRequestTwo>()
-            .Property(x => x.ApprovalStatus)
-            .HasConversion<string>();
-
-        modelBuilder.Entity<BookRequestTwo>()
-            .HasIndex(b => new { b.AuthorId, b.Title, b.ApprovalStatus, b.RequestType, b.Count })
-            .IsUnique()
-            .HasFilter("""
-                       "ApprovalStatus" = 'Pending' and "RequestType" = 'Add'
-                       """);
 
         List<Author> authors =
         [
@@ -73,22 +59,12 @@ public class ApplicationDbContext : DbContext
             new Author() { Id = 7, AuthorId = "Judy Blume" }
         ];
 
-        modelBuilder.Entity<BookRequest>()
-            .PrimitiveCollection(c => c.DeclineReasons)
-            .ElementType()
-            .HasConversion<string>();
+        modelBuilder.Entity<BookRequest>();
 
         modelBuilder.Entity<BookRequestDeclineReason>()
             .Property(c => c.Reason)
             .HasConversion<string>();
 
-        modelBuilder.Entity<BookRequestDeclineReasonTwo>()
-            .Property(c => c.Reason)
-            .HasConversion<string>();
-
-        modelBuilder.Entity<BookRequestDeclineReasonThree>()
-            .Property(c => c.Reason)
-            .HasConversion<string>();
 
         modelBuilder.Entity<Author>()
             .HasData(authors);

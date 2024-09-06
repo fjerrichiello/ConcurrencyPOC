@@ -28,9 +28,8 @@ public class AddBookHandler(
         {
             await _bookCountRepository.AddAsync(addBookRequestDto.AuthorId);
             //Add request we know none exist
-            await _bookRequestRepository.AddAsync(new BookRequest(addBookRequestDto.AuthorId,
-                addBookRequestDto.Title,
-                RequestType.Add));
+            await _bookRequestRepository.AddAddBookRequestAsync(new AddBookRequest(addBookRequestDto.AuthorId,
+                addBookRequestDto.Title));
 
             await _unitOfWork.CompleteAsync();
             return;
@@ -38,9 +37,8 @@ public class AddBookHandler(
 
         if (await DoesExist(addBookRequestDto.AuthorId, addBookRequestDto.Title)) return;
 
-        await _bookRequestRepository.AddAsync(new BookRequest(addBookRequestDto.AuthorId,
-            addBookRequestDto.Title,
-            RequestType.Add));
+        await _bookRequestRepository.AddAddBookRequestAsync(new AddBookRequest(addBookRequestDto.AuthorId,
+            addBookRequestDto.Title));
 
         await _bookCountRepository.IncrementCountAsync(bookCount!.Id);
 

@@ -11,13 +11,25 @@ public class BookRequestRepository(ApplicationDbContext _context) : IBookRequest
             x.AuthorId.ToLower().Equals(authorId.ToLower())
             && x.ApprovalStatus == ApprovalStatus.Pending);
 
-    public async Task AddAsync(BookRequest bookRequest)
+    public async Task AddAddBookRequestAsync(AddBookRequest addBookRequest)
         => await _context.BookRequests.AddAsync(new Models.BookRequest()
         {
             MainId = Guid.NewGuid(),
-            AuthorId = bookRequest.AuthorId,
-            Title = bookRequest.Title,
-            RequestType = bookRequest.RequestType,
+            AuthorId = addBookRequest.AuthorId,
+            Title = addBookRequest.Title,
+            NewTitle = addBookRequest.Title,
+            RequestType = RequestType.Add,
+            ApprovalStatus = ApprovalStatus.Pending
+        });
+
+    public async Task AddEditBookRequestAsync(EditBookRequest editBookRequest)
+        => await _context.BookRequests.AddAsync(new Models.BookRequest()
+        {
+            MainId = Guid.NewGuid(),
+            AuthorId = editBookRequest.AuthorId,
+            Title = editBookRequest.Title,
+            NewTitle = editBookRequest.Title,
+            RequestType = RequestType.Edit,
             ApprovalStatus = ApprovalStatus.Pending
         });
 

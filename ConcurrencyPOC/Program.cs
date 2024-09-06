@@ -13,13 +13,9 @@ var services = builder.Services;
 // Add Services
 services.AddKeyedScoped<IAddBookHandler, AddBookHandler>("One");
 
-services.AddKeyedScoped<IAddBookHandler, AddBookHandlerTwo>("Two");
-
 services.AddScoped<IBookRepository, BookRepository>();
 
 services.AddKeyedScoped<IBookRequestRepository, BookRequestRepository>("One");
-
-services.AddKeyedScoped<IBookRequestRepository, BookRequestTwoRepository>("Two");
 
 services.AddScoped<IUnitOfWork, UnitOfWork<ApplicationDbContext>>();
 

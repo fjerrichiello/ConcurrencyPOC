@@ -139,98 +139,9 @@ namespace ConcurrencyPOC.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string[]>("DeclineReasons")
-                        .HasColumnType("text[]");
-
-                    b.Property<string>("RequestType")
+                    b.Property<string>("NewTitle")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("MainId");
-
-                    b.HasIndex("AuthorId", "Title", "ApprovalStatus", "RequestType")
-                        .IsUnique()
-                        .HasFilter("\"ApprovalStatus\" = 'Pending' and \"RequestType\" = 'Add'");
-
-                    b.ToTable("BookRequests");
-                });
-
-            modelBuilder.Entity("ConcurrencyPOC.Persistence.Models.BookRequestDeclineReason", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("BookRequestMainId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Reason")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BookRequestMainId");
-
-                    b.ToTable("BookRequestDeclineReason");
-                });
-
-            modelBuilder.Entity("ConcurrencyPOC.Persistence.Models.BookRequestDeclineReasonThree", b =>
-                {
-                    b.Property<Guid>("BookRequestId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Reason")
-                        .HasColumnType("text");
-
-                    b.HasKey("BookRequestId", "Reason");
-
-                    b.ToTable("BookRequestDeclineReasonThree");
-                });
-
-            modelBuilder.Entity("ConcurrencyPOC.Persistence.Models.BookRequestDeclineReasonTwo", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<Guid?>("BookRequestMainId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Reason")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BookRequestMainId");
-
-                    b.ToTable("BookRequestDeclineReasonTwo");
-                });
-
-            modelBuilder.Entity("ConcurrencyPOC.Persistence.Models.BookRequestTwo", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ApprovalStatus")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("AuthorId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("Count")
-                        .HasColumnType("integer");
 
                     b.Property<string>("RequestType")
                         .IsRequired()
@@ -246,47 +157,49 @@ namespace ConcurrencyPOC.Persistence.Migrations
                         .HasColumnType("xid")
                         .HasColumnName("xmin");
 
-                    b.HasKey("Id");
+                    b.HasKey("MainId");
 
-                    b.HasIndex("AuthorId", "Title", "ApprovalStatus", "RequestType", "Count")
+                    b.HasIndex("AuthorId", "Title", "NewTitle", "ApprovalStatus", "RequestType")
                         .IsUnique()
                         .HasFilter("\"ApprovalStatus\" = 'Pending' and \"RequestType\" = 'Add'");
 
-                    b.ToTable("BookRequestTwos");
+                    b.ToTable("BookRequests");
                 });
 
             modelBuilder.Entity("ConcurrencyPOC.Persistence.Models.BookRequestDeclineReason", b =>
                 {
-                    b.HasOne("ConcurrencyPOC.Persistence.Models.BookRequest", null)
-                        .WithMany("DeclineReasons2")
-                        .HasForeignKey("BookRequestMainId");
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("BookRequestMainId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BookRequestMainId", "Reason")
+                        .IsUnique();
+
+                    b.ToTable("BookRequestDeclineReasons");
                 });
 
-            modelBuilder.Entity("ConcurrencyPOC.Persistence.Models.BookRequestDeclineReasonThree", b =>
+            modelBuilder.Entity("ConcurrencyPOC.Persistence.Models.BookRequestDeclineReason", b =>
                 {
                     b.HasOne("ConcurrencyPOC.Persistence.Models.BookRequest", "BookRequest")
-                        .WithMany("DeclineReasonsThree")
-                        .HasForeignKey("BookRequestId")
+                        .WithMany("DeclineReasons")
+                        .HasForeignKey("BookRequestMainId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("BookRequest");
                 });
 
-            modelBuilder.Entity("ConcurrencyPOC.Persistence.Models.BookRequestDeclineReasonTwo", b =>
-                {
-                    b.HasOne("ConcurrencyPOC.Persistence.Models.BookRequest", null)
-                        .WithMany("DeclineReasonsTwo")
-                        .HasForeignKey("BookRequestMainId");
-                });
-
             modelBuilder.Entity("ConcurrencyPOC.Persistence.Models.BookRequest", b =>
                 {
-                    b.Navigation("DeclineReasons2");
-
-                    b.Navigation("DeclineReasonsThree");
-
-                    b.Navigation("DeclineReasonsTwo");
+                    b.Navigation("DeclineReasons");
                 });
 #pragma warning restore 612, 618
         }

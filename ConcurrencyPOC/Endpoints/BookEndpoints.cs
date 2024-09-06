@@ -16,60 +16,27 @@ public static class BookEndpoints
     {
         app.MapPost("/add-book-request", AddBookRequest);
         app.MapPost("/add-book-decline-reason-test", AddBookDeclineReason);
-        app.MapPost("/add-book-decline-reason-test-two", AddBookDeclineReason2);
-        app.MapPost("/add-book-decline-reason-test-three", AddBookDeclineReason3);
         app.MapPost("/add-book-request-two", AddBookRequestTwo);
-    }
-
-    private static async Task AddBookDeclineReason2([FromServices] ApplicationDbContext dbContext)
-    {
-        List<DeclineReason> declineReasons = [DeclineReason.Reason1, DeclineReason.Reason2];
-        var bookRequest = new BookRequest()
-        {
-            ApprovalStatus = ApprovalStatus.Pending,
-            AuthorId = $"New Author {Guid.NewGuid()}",
-            DeclineReasons2 = declineReasons.Select(x => new BookRequestDeclineReason(Guid.NewGuid(), x)).ToList(),
-            MainId = Guid.NewGuid(),
-            RequestType = RequestType.Add,
-            Title = "Test"
-        };
-
-        await dbContext.AddAsync(bookRequest);
-        await dbContext.SaveChangesAsync();
-    }
-
-    private static async Task AddBookDeclineReason3([FromServices] ApplicationDbContext dbContext)
-    {
-        List<DeclineReason> declineReasons = [DeclineReason.Reason1, DeclineReason.Reason2];
-        var bookRequest = new BookRequest()
-        {
-            ApprovalStatus = ApprovalStatus.Pending,
-            AuthorId = $"New Author {Guid.NewGuid()}",
-            DeclineReasonsTwo = declineReasons.Select(x => new BookRequestDeclineReasonTwo(x)).ToList(),
-            MainId = Guid.NewGuid(),
-            RequestType = RequestType.Add,
-            Title = "Test"
-        };
-
-        await dbContext.AddAsync(bookRequest);
-        await dbContext.SaveChangesAsync();
     }
 
     private static async Task AddBookDeclineReason([FromServices] ApplicationDbContext dbContext)
     {
+        List<DeclineReason> declineReasons = [DeclineReason.Reason1, DeclineReason.Reason2];
         var bookRequest = new BookRequest()
         {
             ApprovalStatus = ApprovalStatus.Pending,
-            AuthorId = "New Author",
-            DeclineReasons = [DeclineReason.Reason1, DeclineReason.Reason2],
+            AuthorId = $"New Author {Guid.NewGuid()}",
+            DeclineReasons = declineReasons.Select(x => new BookRequestDeclineReason(Guid.NewGuid(), x)).ToList(),
             MainId = Guid.NewGuid(),
             RequestType = RequestType.Add,
-            Title = "Test"
+            Title = "Test",
+            NewTitle = "Test"
         };
 
         await dbContext.AddAsync(bookRequest);
         await dbContext.SaveChangesAsync();
     }
+
 
     // private static async Task AddBookRequest(HttpContext context,
     //     [FromKeyedServices("One")]

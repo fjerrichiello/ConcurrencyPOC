@@ -26,4 +26,10 @@
         </Content>
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="Persistence\Models\BookRequestAddDeclineReason.cs" />
+      <Compile Remove="Persistence\Migrations\20240801003649_AddFourthOptionForCollection.cs" />
+      <Compile Remove="Persistence\Migrations\20240801003649_AddFourthOptionForCollection.Designer.cs" />
+    </ItemGroup>
+
 </Project>

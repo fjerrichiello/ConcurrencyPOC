@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ConcurrencyPOC.Persistence.Models;
 
+[Index(nameof(BookRequestMainId), nameof(Reason), IsUnique = true)]
 public class BookRequestDeclineReason
 {
     public BookRequestDeclineReason(Guid id, DeclineReason reason)
@@ -18,4 +19,8 @@ public class BookRequestDeclineReason
     public Guid Id { get; set; }
 
     public DeclineReason Reason { get; set; }
+
+    public Guid BookRequestMainId { get; set; }
+
+    public BookRequest BookRequest { get; set; }
 }

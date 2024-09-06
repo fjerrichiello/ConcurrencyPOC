@@ -13,16 +13,15 @@ public class BookRequest
     public required string AuthorId { get; set; }
 
     public required string Title { get; set; }
+    
+    public required string NewTitle { get; set; }
 
     public RequestType RequestType { get; set; }
 
     public ApprovalStatus ApprovalStatus { get; set; }
 
-    public IEnumerable<DeclineReason>? DeclineReasons { get; set; }
+    public ICollection<BookRequestDeclineReason>? DeclineReasons { get; set; } = [];
 
-    public IEnumerable<BookRequestDeclineReason>? DeclineReasons2 { get; set; }
-
-    public IEnumerable<BookRequestDeclineReasonTwo>? DeclineReasonsTwo { get; set; }
-
-    public IEnumerable<BookRequestDeclineReasonThree>? DeclineReasonsThree { get; set; }
+    [Timestamp]
+    public uint? Version { get; set; }
 }
